@@ -16,6 +16,10 @@ SCUI.CalendarView = SC.View.extend({
     if (selectedDate) this.set('monthStartOn', selectedDate.adjust({ day: 1 }));
   },
   
+  touchStart: function(evt) {
+    this.mouseDown(evt);
+  },
+
   mouseDown: function(evt) {
     var date = this._parseSelectedDate(evt.target.id);
     if (date) this.set('selectedDate', date);
@@ -27,6 +31,10 @@ SCUI.CalendarView = SC.View.extend({
     return YES;
   },
   
+  touchEnd: function(evt) {
+    this.mouseUp(evt);
+  },
+
   mouseUp: function(evt) {
     var monthStartOn = this.get('monthStartOn');
     

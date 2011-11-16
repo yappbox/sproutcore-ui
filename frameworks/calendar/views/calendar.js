@@ -39,17 +39,20 @@ SCUI.CalendarView = SC.View.extend({
     var monthStartOn = this.get('monthStartOn');
     
     var className = evt.target.className, param;
-    var unit = className.match('previous') ? -1 : 1;    
-    
-    if (className.match('year')) {
-      param = {year: unit};
-    } else {
-      param = {month: unit};
+
+    if (className.match('button')) {
+      var unit = className.match('previous') ? -1 : 1;    
+      
+      if (className.match('year')) {
+        param = {year: unit};
+      } else {
+        param = {month: unit};
+      }
+      
+      this.set('monthStartOn', monthStartOn.advance(param));
     }
     
-    this.set('monthStartOn', monthStartOn.advance(param));
     this.$('.button.active').removeClass('active');
-    
     return YES;
   },
   
@@ -64,8 +67,8 @@ SCUI.CalendarView = SC.View.extend({
     
     context = context .begin('div').addClass('header')
                         .begin('div').addClass('month').text(monthStartOn.toFormattedString('%B %Y')).end()
-                        .begin('div').addClass('button previous').end()
-                        .begin('div').addClass('button next').end()
+                        .begin('div').addClass('button month previous').end()
+                        .begin('div').addClass('button month next').end()
                         .begin('div').addClass('button previous year').end()
                         .begin('div').addClass('button next year').end()
                       .end()

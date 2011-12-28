@@ -100,13 +100,19 @@ SCUI.TimePickerView = SCUI.ComboBoxView.extend(
     var textField = this.get('textFieldView'),
         format = this.get('timeFormat'),
         value = textField.get('value'),
+        startTime = this.get('startTime'),
         dateTime = null;
-
     if (!SC.empty(value)) {
       try {
         dateTime = SC.DateTime.parse(value, format);
-      } catch(exp){
-      }
+        if (dateTime && startTime) {
+          dateTime = dateTime.adjust({
+            year: startTime.get('year'),
+            month: startTime.get('month'),
+            day:startTime.get('day')
+          });
+        }
+      } catch(_){}
     }
 
     if (this.get('isEditing')) {
@@ -118,11 +124,11 @@ SCUI.TimePickerView = SCUI.ComboBoxView.extend(
         this.setIfChanged('selectedTime', dateTime);
         this.setIfChanged('value', value);
       }
-      // in IE, as soon as you the user browses through the results in the picker pane by 
-      // clicking on the scroll bar or the scroll thumb, the textfield loses focus causing 
-      // commitEditing to be called and subsequently hideList which makes for a very annoying 
-      // experience. With this change, clicking outside the pane will hide it (same as original behavior), 
-      // however, if the user directly shifts focus to another text field, then the pane 
+      // in IE, as soon as you the user browses through the results in the picker pane by
+      // clicking on the scroll bar or the scroll thumb, the textfield loses focus causing
+      // commitEditing to be called and subsequently hideList which makes for a very annoying
+      // experience. With this change, clicking outside the pane will hide it (same as original behavior),
+      // however, if the user directly shifts focus to another text field, then the pane
       // won't be removed. This behavior is still buggy but less buggy than it was before.
       if (!SC.browser.msie) {
         this.hideList();

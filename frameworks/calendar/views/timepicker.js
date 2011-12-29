@@ -107,9 +107,9 @@ SCUI.TimePickerView = SCUI.ComboBoxView.extend(
         dateTime = SC.DateTime.parse(value, format);
         if (dateTime && startTime) {
           dateTime = dateTime.adjust({
-            year: startTime.get('year'),
+            year:  startTime.get('year'),
             month: startTime.get('month'),
-            day:startTime.get('day')
+            day:   startTime.get('day')
           });
         }
       } catch(_){}

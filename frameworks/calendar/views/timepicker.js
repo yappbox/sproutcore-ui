@@ -25,11 +25,13 @@ SCUI.TimePickerView = SCUI.ComboBoxView.extend(
   dropDownButtonView: null,
   nameKey: null,
   valueKey: null,
+  hint:'Choose a time...',
 
   textFieldView: SC.TextFieldView.extend({
     classNames: 'scui-timepicker-text-field-view'.w(),
     layout: { top: 0, left: 0, bottom: 0, right: 0 },
     spellCheckEnabled: NO,
+    hintBinding: SC.Binding.from('hint', this),
     fieldDidFocus: function() {
       sc_super();
       var filteredObjects = this.parentView.get('filteredObjects');

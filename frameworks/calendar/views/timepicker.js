@@ -71,6 +71,8 @@ SCUI.TimePickerView = SCUI.ComboBoxView.extend(
     var times = [],
         step = this.get('step'),
         format = this.get('timeFormat'),
+        selTime = this.get('selectedTime'),
+        selTimeInserted = NO,
         time = this.get('startTime'),
         endTime = this.get('endTime');
     if (!(SC.DateTime.compare(time, endTime) < 0)) {
@@ -79,6 +81,10 @@ SCUI.TimePickerView = SCUI.ComboBoxView.extend(
     while(SC.DateTime.compare(time, endTime) <= 0) {
       times.push(time.toFormattedString(format));
       time = time.advance({minute: step});
+      if (!selTimeInserted && selTime && SC.DateTime.compare(time, selTime) >= 0) {
+          times.push(selTime.toFormattedString(format));
+          selTimeInserted = YES;
+      }
     }
     return times;
   }.property('startTime', 'endTime', 'step', 'timeFormat'),

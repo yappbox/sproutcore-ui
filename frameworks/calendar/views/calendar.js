@@ -17,6 +17,10 @@ SCUI.CalendarView = SC.View.extend({
     if (selectedDate) this.set('monthStartOn', selectedDate.adjust({ day: 1 }));
   },
   
+  touchStart: function(evt) {
+    this.mouseDown(evt);
+  },
+
   mouseDown: function(evt) {
     var date = this._parseSelectedDate(evt.target.id);
     if (date) this.set('selectedDate', date);
@@ -28,28 +32,29 @@ SCUI.CalendarView = SC.View.extend({
     return YES;
   },
   
+  touchEnd: function(evt) {
+    this.mouseUp(evt);
+  },
+
   mouseUp: function(evt) {
     var monthStartOn = this.get('monthStartOn');
     
-    var className = evt.target.className,
-        param;
-    
+    var className = evt.target.className, param;
+
     if (className.match('button')) {
       var unit = className.match('previous') ? -1 : 1;    
-    
+      
       if (className.match('year')) {
         param = {year: unit};
       } else {
         param = {month: unit};
       }
-    
+      
       this.set('monthStartOn', monthStartOn.advance(param));
-      this.$('.button.active').removeClass('active');
-      return YES;
-    } else {
-      return NO;
     }
     
+    this.$('.button.active').removeClass('active');
+    return YES;
   },
   
   render: function(context, firstTime) {
@@ -63,15 +68,11 @@ SCUI.CalendarView = SC.View.extend({
     
     context = context .begin('div').addClass('header')
                         .begin('div').addClass('month').text(monthStartOn.toFormattedString('%B %Y')).end()
-                        .begin('div').addClass('button previous').end()
-                        .begin('div').addClass('button next').end();
-
-    if (this.get('showYearButtons')) {
-      context = context .begin('div').addClass('button previous year').end()
-                        .begin('div').addClass('button next year').end();
-    }  
-                        
-    context = context .end()
+                        .begin('div').addClass('button month previous').end()
+                        .begin('div').addClass('button month next').end()
+                        .begin('div').addClass('button previous year').end()
+                        .begin('div').addClass('button next year').end()
+                      .end()
                       .begin('div').addClass('body');
     
     for (var i = 0; i < 7; i++) {

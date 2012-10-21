@@ -66,6 +66,7 @@ SCUI.DatePickerView = SC.View.extend(
       layout: {left: 0, top: 0, right: 0, bottom: 0},
       classNames: ['scui-datechooser-text'],
       isEnabled: YES,
+      isEditable: NO,
       valueBinding: SC.Binding.from('.dateString', that),
       hintBinding: SC.Binding.from('hint', that),
       mouseDown: function (evt) {
